@@ -31,16 +31,17 @@ def words(numbers):
 
 class Wordle:
     def __init__(self):
-        self.word = get_words(5)
+        self.word = None
         self.matrix = []
-        for i in range(5):
+        for i in range(self.wordLength):
             row = []
-            for j in range(5):
+            for j in range(self.wordLength):
                 row.append("_")
             self.matrix.append(row)
         self.user_input = None
         self.trys = 0
         self.check = True
+        self.wordLength = None
 
     def getUserInput(self):
         self.user_input = input("Give me a 5 letter word: ")
@@ -48,28 +49,33 @@ class Wordle:
     def drawTryMatrix(self, user_input):
         print(self.user_input, self.word)
         for i in range(5):
-            print(i)
+            num = 0
             if self.user_input[i] == self.word[i]:
                 self.matrix[self.trys][i] = self.user_input[i]
+                num += 1
+                print(num)
             else:
                 self.matrix[self.trys][i] = "_"
-
+                num = 0
+        if(num == 5):
+            self.check = False
     def Start(self):
+        
+        self.wordLength = input("Word Length: ")
+        self.word = get_words(self.wordLength)
         while (self.check):
             self.getUserInput()
-            self.drawTryMatrix(self.user_input)
-            self.printMatrix()
-            self.trys += 1
-        print(self.trys)
-    
-    #def stop(self):
-   #     for i in self
-#
+            if(len(self.getUserInput) != self.wordLength):
+                self.getUserInput()
+            else:
+                self.drawTryMatrix(self.user_input)
+                self.printMatrix()
+                self.trys += 1
+                if(self.check == False):
+                    print("Nice Job! You have completed the Wordle in " + str(self.trys))
+              
     def printMatrix(self):
         for r in self.matrix:
-            print(r)
-
-        print('test')
-        print(r)    
+            print(r)   
 word = Wordle()
 word.Start()
