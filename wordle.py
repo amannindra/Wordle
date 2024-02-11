@@ -76,7 +76,7 @@ class Wordle:
 
     def checkfullword(self):
         for i in range(self.wordLength):
-            if(self.user_input[i] != self.word[i])
+            if(self.user_input[i] != self.word[i]):
                 break
             else:
                 self.check = False
