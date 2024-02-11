@@ -1,6 +1,64 @@
 import random
 from datetime import datetime
-import string
+import tkinter as tk
+
+
+def show_grid():
+    window.geometry("400x430")
+    start_frame.pack_forget()  # Hide the start frame
+    grid_frame.pack(fill='both', expand=True)  # Show the grid frame
+
+
+def click(row, col):
+    print(f"You are in row({row}) and col({col})")
+
+
+# Main window
+window = tk.Tk()
+window.geometry("50x100")
+
+# Start frame
+start_frame = tk.Frame(window)
+start_frame.pack(fill='both', expand=True)
+
+start_button = tk.Button(start_frame, text="Start", command=show_grid)
+start_button.pack(pady=20)
+Wordle = NewWordle()
+word = Wordle.get_words()
+
+
+# Grid frame
+grid_frame = tk.Frame(window)
+for row in range(5):
+    for col in range(5):
+        label = tk.Button(grid_frame, text=f'Row {row}\nCol {col}', borderwidth=2, relief="groove", width=10, height=5, command=lambda r=row, c=col: click(r, c))
+        label.grid(row=row, column=col)
+
+grid_frame.pack_forget()
+
+window.mainloop()
+
+class NewWordle:
+    def __init__(self):
+        self.word = self.words(5)
+    def get_words(self, length):
+        random_number = random.randint(1, 4671)
+        number = 1
+        word_list = ""
+        with open('words.txt') as file:
+            file_content = file.read()
+            for word in file_content.split():
+                if len(word) == length:
+                    if (number == random_number):
+                        word_list = word
+                        break
+                    else:
+                        number += 1
+        if word_list is None:
+            print(f"No word found with length {length}")
+            return None
+        else:
+            return word_list
 
 
 
@@ -107,5 +165,6 @@ class Wordle:
 
 
 '''
-word = Wordle()
+'''word = Wordle()
 word.Start()
+'''
