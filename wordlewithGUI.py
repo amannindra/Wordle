@@ -3,15 +3,36 @@ from datetime import datetime
 import tkinter as tk
 
 
+
+def get_words(length=5):
+    random_number = random.randint(1, 4671)
+    number = 1
+    word_list = ""
+    with open('words.txt') as file:
+        file_content = file.read()
+        for word in file_content.split():
+            if len(word) == length:
+                if (number == random_number):
+                    word_list = word
+                    break
+                else:
+                    number += 1
+    if word_list is None:
+        print(f"No word found with length {length}")
+        return None
+    else:
+        return word_list
+
+
 def show_grid():
     window.geometry("400x430")
     start_frame.pack_forget()  # Hide the start frame
     grid_frame.pack(fill='both', expand=True)  # Show the grid frame
 
 
-def click(row, col):
+def location(row, col):
     print(f"You are in row({row}) and col({col})")
-
+def summit():
 
 # Main window
 window = tk.Tk()
@@ -21,45 +42,23 @@ window.geometry("50x100")
 start_frame = tk.Frame(window)
 start_frame.pack(fill='both', expand=True)
 
-start_button = tk.Button(start_frame, text="Start", command=show_grid)
+start_button = tk.Button(start_frame, text="Start",command=show_grid, width=50, height=50)
 start_button.pack(pady=20)
-Wordle = NewWordle()
-word = Wordle.get_words()
+word = get_words(5)
+print(word)
 
 
 # Grid frame
 grid_frame = tk.Frame(window)
 for row in range(5):
     for col in range(5):
-        label = tk.Button(grid_frame, text=f'Row {row}\nCol {col}', borderwidth=2, relief="groove", width=10, height=5, command=lambda r=row, c=col: click(r, c))
+        label = tk.Entry(grid_frame, borderwidth=2, relief="groove",  width=10, font=('Arial', 12))
         label.grid(row=row, column=col)
+        label.bind("<Button-1>", lambda event, r=row, c=col: location(r, c))
 
 grid_frame.pack_forget()
 
 window.mainloop()
-
-class NewWordle:
-    def __init__(self):
-        self.word = self.words(5)
-    def get_words(self, length):
-        random_number = random.randint(1, 4671)
-        number = 1
-        word_list = ""
-        with open('words.txt') as file:
-            file_content = file.read()
-            for word in file_content.split():
-                if len(word) == length:
-                    if (number == random_number):
-                        word_list = word
-                        break
-                    else:
-                        number += 1
-        if word_list is None:
-            print(f"No word found with length {length}")
-            return None
-        else:
-            return word_list
-
 
 
 class Wordle:
